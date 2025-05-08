@@ -80,8 +80,10 @@ django-blog-system/
 ├── render.yaml            # Render config
 └── requirements.txt       # Dependencies
 ```
+
 Troubleshooting
 Images Not Displaying?
+
 Check MEDIA_URL and MEDIA_ROOT in settings.py
 
 Verify file permissions: chmod -R 755 media/
