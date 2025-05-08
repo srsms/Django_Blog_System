@@ -79,7 +79,7 @@ django-blog-system/
 ├── .env.example           # Environment template
 ├── render.yaml            # Render config
 └── requirements.txt       # Dependencies
-
+```
 Troubleshooting
 Images Not Displaying?
 Check MEDIA_URL and MEDIA_ROOT in settings.py
@@ -88,8 +88,8 @@ Verify file permissions: chmod -R 755 media/
 
 For production, use AWS S3 or Cloudinary
 
+```bash
 Database Issues?
-bash
 # Reset database (dev only)
 python manage.py flush
 python manage.py migrate
