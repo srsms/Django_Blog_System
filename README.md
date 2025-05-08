@@ -95,5 +95,6 @@ python manage.py flush
 python manage.py migrate
 License
 MIT License - Free for personal and commercial use
+```
 
 Live Demo: https://django-blog-6lnv.onrender.com
