@@ -13,3 +13,7 @@ services:
           property: connectionString
       - key: DEBUG
         value: "False"
+    disk:
+      name: media_storage
+      mountPath: /opt/render/project/src/media/
+      sizeGB: 1

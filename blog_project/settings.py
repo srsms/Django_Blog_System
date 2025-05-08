@@ -123,9 +123,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (uploads)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-MAX_UPLOAD_SIZE = 5242880  # 5MB
+
+if os.environ.get('RENDER'):
+    MEDIA_ROOT = '/opt/render/project/src/media/'
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Login settings
 LOGIN_REDIRECT_URL = 'blog:post_list'
