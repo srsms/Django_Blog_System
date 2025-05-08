@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
+from .custom_storage import MediaFileStorage  # Import the custom storage
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -15,7 +16,11 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    # Use custom storage for image field
+    image = models.ImageField(upload_to='post_images/', 
+                             storage=MediaFileStorage(),
+                             blank=True, 
+                             null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
