@@ -38,8 +38,8 @@ def post_create(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.save()  # This saves the post and creates an ID
-            form.save_m2m()  # This saves the tags after the ID exists
+            post.save() 
+            form.save_m2m()  
             return redirect('blog:post_detail', pk=post.pk)
     else:
         form = PostForm()

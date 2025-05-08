@@ -25,13 +25,11 @@ class PostForm(forms.ModelForm):
             self.fields['tag_input'].initial = self.instance.tag_list
 
     def save(self, commit=True):
-        # First save the post to get an ID
         instance = super().save(commit=False)
         if commit:
             instance.save()
-            self.save_m2m()  # This saves the many-to-many relationships
+            self.save_m2m() 
         else:
-            # If not committing, save the m2m data in memory
             self._save_m2m = self._save_tags
         return instance
 
