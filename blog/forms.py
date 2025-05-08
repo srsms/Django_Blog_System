@@ -1,0 +1,63 @@
+from django import forms
+from .models import Post, Tag
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+
+class PostForm(forms.ModelForm):
+    tag_input = forms.CharField(
+        label='Tags',
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Comma-separated tags'})
+    )
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'image']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['tag_input'].initial = self.instance.tag_list
+
+    def save(self, commit=True):
+        # First save the post to get an ID
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+            self.save_m2m()  # This saves the many-to-many relationships
+        else:
+            # If not committing, save the m2m data in memory
+            self._save_m2m = self._save_tags
+        return instance
+
+    def _save_tags(self):
+        # Handle tags after the main instance is saved
+        tag_names = [name.strip() for name in self.cleaned_data['tag_input'].split(',') if name.strip()]
+        tags = []
+        for name in tag_names:
+            tag, created = Tag.objects.get_or_create(name=name)
+            tags.append(tag)
+        self.instance.tags.set(tags)
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})

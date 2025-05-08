@@ -1,0 +1,38 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Additional spacing for forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Make sure images in posts don't overflow */
+.post-content img {
+    max-width: 100%;
+    height: auto;
+}
