@@ -26,13 +26,32 @@ footer {
     margin-top: auto;
 }
 
-/* Additional spacing for forms */
 .form-group {
     margin-bottom: 1rem;
 }
 
-/* Make sure images in posts don't overflow */
 .post-content img {
     max-width: 100%;
     height: auto;
+}
+
+.post-tags {
+    margin: 10px 0;
+}
+
+.post-tags .badge {
+    margin-right: 5px;
+    font-size: 0.85rem;
+    padding: 0.35em 0.65em;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.post-tags .badge:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
 }

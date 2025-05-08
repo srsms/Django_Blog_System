@@ -7,7 +7,7 @@ class PostForm(forms.ModelForm):
     tag_input = forms.CharField(
         label='Tags',
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Comma-separated tags'})
+        widget=forms.TextInput(attrs={'placeholder': 'Comma-separated tags', 'class': 'form-control'})
     )
 
     class Meta:
@@ -22,25 +22,27 @@ class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
-            self.fields['tag_input'].initial = self.instance.tag_list
+            self.fields['tag_input'].initial = ', '.join([tag.name for tag in self.instance.tags.all()])
 
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
             instance.save()
-            self.save_m2m() 
+            self._save_tags()
+            return instance
         else:
             self._save_m2m = self._save_tags
-        return instance
+            return instance
 
     def _save_tags(self):
-        # Handle tags after the main instance is saved
+        # First, clear existing tags to avoid duplicates
+        self.instance.tags.clear()
+        
+        # Process new tags
         tag_names = [name.strip() for name in self.cleaned_data['tag_input'].split(',') if name.strip()]
-        tags = []
         for name in tag_names:
             tag, created = Tag.objects.get_or_create(name=name)
-            tags.append(tag)
-        self.instance.tags.set(tags)
+            self.instance.tags.add(tag)
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)

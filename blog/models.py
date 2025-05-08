@@ -8,6 +8,9 @@ class Tag(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['name']
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -15,7 +18,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     
     def __str__(self):
         return self.title
@@ -23,9 +26,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.pk})
     
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-    
     @property
     def tag_list(self):
         return ", ".join([tag.name for tag in self.tags.all()])
+        
+    class Meta:
+        ordering = ['-date_posted']
