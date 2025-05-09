@@ -62,6 +62,7 @@ def post_update(request, pk):
             return redirect('blog:post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
+    
     return render(request, 'blog/post_form.html', {'form': form, 'title': 'Update Post'})
 
 @login_required
