@@ -11,10 +11,8 @@ class MediaFileStorage(FileSystemStorage):
         Override the URL method to ensure proper URL generation for media files
         in both development and production environments.
         """
-        # Get the original URL
         url = super().url(name)
         
-        # For Render deployment, handle URL differently
         if os.environ.get('RENDER'):
             if not url.startswith('/media/'):
                 return f"{settings.MEDIA_URL}{name}"

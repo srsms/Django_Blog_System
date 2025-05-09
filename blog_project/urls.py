@@ -24,5 +24,4 @@ urlpatterns = [
     path('', include('blog.urls')),
 ]
 
-# Serve media files in BOTH development AND production
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

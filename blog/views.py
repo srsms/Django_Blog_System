@@ -9,7 +9,6 @@ from django.db.models import Q
 
 def post_list(request):
     query = request.GET.get('q')
-    # Use select_related and prefetch_related to optimize query performance
     posts = Post.objects.all().prefetch_related('tags').select_related('author').order_by('-date_posted')
     
     if query:
@@ -19,7 +18,7 @@ def post_list(request):
             Q(tags__name__icontains=query)
         ).distinct()
     
-    paginator = Paginator(posts, 5)  # Show 5 posts per page
+    paginator = Paginator(posts, 5) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -41,7 +40,6 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            # Now properly save tags - call form._save_tags() directly 
             form._save_tags()
             messages.success(request, 'Post created successfully!')
             return redirect('blog:post_detail', pk=post.pk)
