@@ -23,3 +23,6 @@ services:
       - type: rewrite
         source: /media/*
         destination: /media/$1
+      - type: redirect
+        source: /*
+        destination: https://$HOST$PATH

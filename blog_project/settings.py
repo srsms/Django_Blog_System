@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w$b$y66@f@1b97zsn9+(q#6!lfc0dqn#i!#v9em32rgu$p8^0r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
@@ -126,12 +126,28 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# Media file settings
 if os.environ.get('RENDER'):
+    # In Render, use the mounted disk path
     MEDIA_URL = '/media/'
     MEDIA_ROOT = '/opt/render/project/src/media/'
+    
+    # Additional settings for Render
+    CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 else:
+    # Local development
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Important: Ensure media is properly served in both environments
+if DEBUG:
+    # For development only - Django will serve media files
+    pass  # This is handled by the urlpatterns in urls.py
+else:
+    # For production, WhiteNoise will serve static files
+    # but we need the MediaUrlMiddleware for media files
+    pass
 
 # Login settings
 LOGIN_REDIRECT_URL = 'blog:post_list'

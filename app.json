@@ -1,0 +1,28 @@
+{
+    "name": "Django Blog System",
+    "description": "A complete blog management system with Django",
+    "repository": "https://github.com/srsms/django-blog-system",
+    "keywords": ["django", "python", "blog", "web"],
+    "env": {
+      "SECRET_KEY": {
+        "description": "A secret key for Django's cryptographic signing",
+        "generator": "secret"
+      },
+      "DEBUG": {
+        "description": "Django debug mode",
+        "value": "False"
+      },
+      "RENDER": {
+        "description": "Flag to indicate Render deployment",
+        "value": "true"
+      }
+    },
+    "addons": [
+      {
+        "plan": "heroku-postgresql:hobby-dev"
+      }
+    ],
+    "scripts": {
+      "postdeploy": "python manage.py migrate && python manage.py seed_data"
+    }
+  }

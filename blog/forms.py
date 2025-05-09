@@ -29,10 +29,7 @@ class PostForm(forms.ModelForm):
         if commit:
             instance.save()
             self._save_tags()
-            return instance
-        else:
-            self._save_m2m = self._save_tags
-            return instance
+        return instance
 
     def _save_tags(self):
         # First, clear existing tags to avoid duplicates

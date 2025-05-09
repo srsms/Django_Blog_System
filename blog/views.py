@@ -41,7 +41,8 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            # Save tags - this is handled in the form's save method now
+            # Now properly save tags - call form._save_tags() directly 
+            form._save_tags()
             messages.success(request, 'Post created successfully!')
             return redirect('blog:post_detail', pk=post.pk)
     else:

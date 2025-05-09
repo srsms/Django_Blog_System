@@ -8,7 +8,10 @@ class MediaUrlMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         
+        # For Render deployment, set necessary headers
         if os.environ.get('RENDER'):
-            response['Content-Security-Policy'] = "img-src 'self' data:;"
+            # Allow images from our domain
+            csp = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' cdn.jsdelivr.net; script-src 'self' cdn.jsdelivr.net;"
+            response['Content-Security-Policy'] = csp
             
         return response
